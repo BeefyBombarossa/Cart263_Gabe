@@ -1,7 +1,6 @@
 /**
 Title of Project
 Author Name
-
 This is a template. You must fill in the title,
 author, and this description to match your project!
 */
@@ -11,6 +10,9 @@ author, and this description to match your project!
 let size = 200;
 let topX = 50;
 let topY = 50;
+let win = false;
+
+let currentTurn = 1;
 
 let button;
 
@@ -20,9 +22,9 @@ let winHeight = (size*3)+(topX+topY);
 //1 = X 2 = O
 
 let myArray = [
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 2, 2]
+    [" ", " ", " "],
+    [" ", " ", " "],
+    [" ", " ", " "]
     ];
 
 /**
@@ -67,7 +69,11 @@ function drawBoard() {
     topX += size/2;
     topY += size/2;
 
-    fill(50)
+    textSize(35);
+    textAlign(CENTER);
+
+    fill(50);
+
     text(myArray[0][0], topX, topY);
     text(myArray[0][1], topX + size, topY);
     text(myArray[0][2], topX + size*2, topY);
@@ -88,32 +94,132 @@ function drawBoard() {
     topY = 50;
 }
 
+function checkForWin() {
+    for(var i = 0; i < 3; i ++) {
+        if(myArray[i][0] === myArray[i][1] && myArray[i][1] === myArray[i][2] && myArray[i][0] != " ") {
+            win = true;
+        } else if (myArray[0][i] === myArray[1][i] && myArray[1][i] === myArray[2][i] && myArray[0][i] != " ") {
+            win = true;
+        } else if (myArray[0][0] === myArray[1][1] && myArray[1][1] === myArray[2][2] && myArray[0][0] != " ") {
+            win = true;
+        } else if (myArray[0][2] === myArray[1][1] && myArray[1][1] === myArray[2][0] && myArray[0][2] != " ") {
+            win = true;
+        }
+    }
+}
+
+function keyPressed() {
+    if (keyCode === ENTER) {
+        win = false;
+     }
+}
+
 function mousePressed() {
     if (mouseX >= topX && mouseX <= topX+size) {
         if(mouseY >= topY && mouseY <= topY+size){
             console.log("1");
+
+            if(currentTurn == 1) {
+                myArray[0][0] = "X";
+                currentTurn = 2;
+            } else {
+                myArray[0][0] = "O";
+                currentTurn = 1;
+            }
+
         } else if(mouseY >= topY+size && mouseY <= topY+size*2){
-            console.log("2");
+            console.log("4");
+
+            if(currentTurn == 1) {
+                myArray[1][0] = "X";
+                currentTurn = 2;
+            } else {
+                myArray[1][0] = "O";
+                currentTurn = 1;
+            }
+
         } else if(mouseY >= topY+size*2 && mouseY <= topY+size*3){
-            console.log("3");
+            console.log("7");
+
+            if(currentTurn == 1) {
+                myArray[2][0] = "X";
+                currentTurn = 2;
+            } else {
+                myArray[2][0] = "O";
+                currentTurn = 1;
+            }
+
         }
 
     } else if (mouseX >= topX+size && mouseX <= topX+size*2){
         if(mouseY >= topY && mouseY <= topY+size){
-            console.log("4");
+            console.log("2");
+
+            if(currentTurn == 1) {
+                myArray[0][1] = "X";
+                currentTurn = 2;
+            } else {
+                myArray[0][1] = "O";
+                currentTurn = 1;
+            }
+
         } else if(mouseY >= topY+size && mouseY <= topY+size*2){
             console.log("5");
+
+            if(currentTurn == 1) {
+                myArray[1][1] = "X";
+                currentTurn = 2;
+            } else {
+                myArray[1][1] = "O";
+                currentTurn = 1;
+            }
+
         } else if(mouseY >= topY+size*2 && mouseY <= topY+size*3){
-            console.log("6");
+            console.log("8");
+
+            if(currentTurn == 1) {
+                myArray[2][1] = "X";
+                currentTurn = 2;
+            } else {
+                myArray[2][1] = "O";
+                currentTurn = 1;
+            }
+
         }
     }
     else if (mouseX >= topX+size*2 && mouseX <= topX+size*3){
         if(mouseY >= topY && mouseY <= topY+size){
-            console.log("7");   
+            console.log("3");
+
+            if(currentTurn == 1) {
+                myArray[0][2] = "X"; 
+                currentTurn = 2;
+            } else {
+                myArray[0][2] = "O";
+                currentTurn = 1;
+            }
+              
         } else if(mouseY >= topY+size && mouseY <= topY+size*2){
-            console.log("8");
+            console.log("6");
+
+            if(currentTurn == 1) {
+                myArray[1][2] = "X"; 
+                currentTurn = 2;
+            } else {
+                myArray[1][2] = "O";
+                currentTurn = 1;
+            }
+
         } else if(mouseY >= topY+size*2 && mouseY <= topY+size*3){
             console.log("9");
+
+            if(currentTurn == 1) {
+                myArray[2][2] = "X"; 
+                currentTurn = 2;
+            } else {
+                myArray[2][2] = "O";
+                currentTurn = 1;
+            }
         }
     }
 }
@@ -122,4 +228,20 @@ Description of draw()
 */
 function draw() {
     drawBoard();
+    checkForWin();
+    if(win) { 
+        myArray = [
+            [" ", " ", " "],
+            [" ", " ", " "],
+            [" ", " ", " "]
+        ];
+
+        push();
+        textSize(80);
+        textAlign(CENTER);
+        text("winner", winWidth/2, winHeight/2);
+        textSize(40);
+        text("press enter to restart", winWidth/2, winHeight/2+40);
+        pop();
+    }
 }
